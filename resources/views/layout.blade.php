@@ -32,23 +32,18 @@
           <a class="nav-link active" aria-current="page" href="/comment/index">All comments</a>
       </li>
       @endcan
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/about">О нас</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/contact">Контакты</a>
-        </li>
-        <!-- <li class="nav-item dropdown">
+        @auth
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
+            Notifications {{auth()->user()->unreadNotifications->count()}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            @foreach(auth()->user()->unreadNotifications as $notification)
+              <li><a class="dropdown-item" href="{{route('article.show', ['article'=>$notification->data['article']['id'], 'notify'=>$notification->id])}}">{{$notification->data['article']['name']}}: {{$notification->data['comment_name']}}</a></li>
+            @endforeach
           </ul>
-        </li> -->
+        </li>
+        @endauth
       </ul>
       @guest
       <a href="/auth/signup" class="btn btn-outline-success me-3">SignUp</a>
